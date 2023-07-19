@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import AdminNav from "../../partials/admin_nav";
@@ -7,27 +8,36 @@ import MarkDown from "../../partials/markdown";
 import Functions from "../../partials/functions";
 
 const AdminNewBlogBody = () => {
-  const [formData, setFormData] = useState({
-    markdown: null,
-    title: null,
-    description: null,
-    author: null,
-    provinceId: null,
-    coverPhotoText: null,
-    coverPhotoTextBlob: null,
-    category: "Tourists Spots",
-    publishmentStatus: "draft",
-  });
+  // const [formData, setFormData] = useState({
+  //   markdown: "",
+  //   title: "",
+  //   description: "",
+  //   author: "",
+  //   provinceId: "",
+  //   coverPhotoText: "",
+  //   coverPhotoTextBlob: "",
+  //   category: "Tourists Spots",
+  //   publishmentStatus: "draft",
+  //   date: "",
+  // });
+
+  const [blog, setBlog] = useState({});
+  const [originalBlog, setOriginalBlog] = useState({});
   let missingInput = null;
+  const mdRef = useRef();
+  let params = useParams();
 
   const save = () => {
     (async () => {
       if (
-        !Object.keys(formData).every((item) => {
+        !Object.keys(blog).every((item) => {
           if (
-            ["coverPhotoTextBlob", "coverPhotoText"].includes(item) ||
-            formData[item] != null
+            ["coverPhotoTextBlob", "coverPhotoText", "date", "__v"].includes(
+              item
+            ) ||
+            blog[item] != ""
           ) {
+            if (item == "date") blog.date = new Date(blog.date) ?? new Date();
             missingInput = null;
             return true;
           } else missingInput = item;
@@ -42,29 +52,60 @@ const AdminNewBlogBody = () => {
         });
         return;
       }
-
+      console.log(blog);
       let _formData = new FormData();
+      for (let items in blog)
+        _formData.append(
+          items,
+          typeof blog[items] == "object" &&
+            !["date", "coverPhotoTextBlob"].includes(items)
+            ? JSON.stringify(blog[items])
+            : blog[items]
+        );
 
-      for (let items in formData) _formData.append(items, formData[items]);
       const { data } = await axios.post(`${appUrl}/blog/new-blog`, _formData, {
         headers: {
           "Content-Type": `multipart/form-data`,
         },
       });
+      console.log(data);
       if (data.success) {
         Swal.fire({
           title: data.message,
-          html: "will be redirected to....",
-          timer: 2000,
+          html: "will be redirected to blog list",
+          timer: 1500,
           timerProgressBar: true,
         }).then((result) => {
-          if (result.dismiss === Swal.DismissReason.timer) {
-            // redirect here
-          }
+          if (result.dismiss === Swal.DismissReason.timer)
+            window.location.replace("/admin");
         });
       }
     })();
   };
+
+  useEffect(() => {
+    (async () => {
+      if (params?.id != null || params?.id != undefined) {
+        let { data } = await axios.get(`${appUrl}/blog/get-blogs-with-filter`, {
+          params: {
+            _id: params.id,
+          },
+        });
+        if (data.success) {
+          setBlog(data.blog[0]);
+          // setFormData(data.blog[0]);
+          setOriginalBlog(data.blog[0]);
+          mdRef.current.value = data.blog[0].markdown;
+        } else
+          Swal.fire({
+            title: "Status Code: 500",
+            text: `Error in the server`,
+            icon: "error",
+            confirmButtonText: "Confirm",
+          });
+      }
+    })();
+  }, []);
 
   return (
     <>
@@ -78,15 +119,19 @@ const AdminNewBlogBody = () => {
         <SideNav />
         <MarkDown
           update={(name, value) =>
-            setFormData((e) => {
+            setBlog((e) => {
               return { ...e, [name]: value };
             })
           }
+          innerRef={mdRef}
+          status={blog?.initialValue}
         />
         <Functions
           save={save}
+          blog={blog}
+          id={params?.id ?? null}
           update={(name, value) =>
-            setFormData((e) => {
+            setBlog((e) => {
               return { ...e, [name]: value };
             })
           }

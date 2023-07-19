@@ -1,19 +1,27 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import moment from "moment";
+
 import { toImageBlob } from "../assets/js/utilities";
 
-const Functions = ({ save, update }) => {
+const Functions = ({ save, update, blog, id }) => {
   const [provinces, setProvinces] = useState([]);
-  const [files, setFiles] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const imageRef = useRef();
+
+  const titleRef = useRef();
+  const descriptionRef = useRef();
+  const authorRef = useRef();
 
   const imageOnChange = async (e) => {
     if (e.target.files.length > 0) {
       let imageObj = URL.createObjectURL(e.target.files[0]);
       let imageBlob = await toImageBlob(e.target.files[0]);
-      setImagePreview(imageObj);
+
+      update("coverPhotoText", null);
       update("coverPhotoTextBlob", imageBlob);
+
+      setImagePreview(imageObj);
     }
   };
 
@@ -23,6 +31,21 @@ const Functions = ({ save, update }) => {
       if (data?.success) setProvinces(data?.provinces);
     })();
   }, []);
+
+  useEffect(() => {
+    if (Object.keys(blog).length > 0) {
+      titleRef.current.value = blog?.title ?? "";
+      descriptionRef.current.value = blog?.description ?? "";
+      authorRef.current.value = blog?.author ?? "";
+
+      if (blog?.coverPhotoTextBlob == null)
+        setImagePreview(
+          Object.keys(blog?.coverPhotoText ?? {}).length > 0
+            ? blog?.coverPhotoText.medium
+            : blog?.coverPhotoText ?? null
+        );
+    }
+  }, [blog]);
 
   return (
     <div className="form-head">
@@ -63,7 +86,7 @@ const Functions = ({ save, update }) => {
             color: "#fff",
           }}
           className="fa-sharp fa-solid fa-rotate-right"
-          onClick={() => setImagePreview(null)} // this should only reset default image
+          onClick={() => setImagePreview(null)}
         ></i>
       </div>
 
@@ -94,6 +117,7 @@ const Functions = ({ save, update }) => {
             onClick={() => {
               setImagePreview(null);
               update("coverPhotoTextBlob", null);
+              update("coverPhotoText", null);
             }}
             className="remove-img-btn"
           >
@@ -110,6 +134,7 @@ const Functions = ({ save, update }) => {
         id="title"
         cols="30"
         rows="10"
+        ref={titleRef}
         onChange={(e) =>
           update("title", e.target.value != "" ? e.target.value : null)
         }
@@ -122,16 +147,17 @@ const Functions = ({ save, update }) => {
         id="description"
         cols="30"
         rows="10"
+        ref={descriptionRef}
         onChange={(e) =>
           update("description", e.target.value != "" ? e.target.value : null)
         }
       ></textarea>
-
       <label htmlFor="Categories">Categories</label>
       <select
         name="category"
         className="input"
         id="category"
+        value={blog?.category ?? "Tourists Spots"}
         required
         onChange={(e) => update("category", e.target.value)}
       >
@@ -141,16 +167,19 @@ const Functions = ({ save, update }) => {
           </option>
         ))}
       </select>
-
-      {/* <label htmlFor="date">Date</label>
-      <input
-        //   value="<%= date %>"
-        type="date"
-        name="date"
-        className="date input"
-        id="date"
-        onChange={(e) => console.log(new Date(e.target.value))}
-      /> */}
+      {Object.keys(blog).length > 0 && (
+        <>
+          <label htmlFor="date">Date</label>
+          <input
+            defaultValue={moment(blog.date).format("YYYY-MM-DD")}
+            type="date"
+            name="date"
+            className="date input"
+            id="date"
+            onChange={(e) => update("date", moment(new Date(e.target.value)))}
+          />
+        </>
+      )}
 
       <label htmlFor="Author">Author</label>
       <input
@@ -159,6 +188,7 @@ const Functions = ({ save, update }) => {
         name="author"
         className="author input"
         id="author"
+        ref={authorRef}
         onChange={(e) =>
           update("author", e.target.value != "" ? e.target.value : null)
         }
@@ -169,6 +199,7 @@ const Functions = ({ save, update }) => {
         required
         className="input"
         id="province"
+        value={blog?.provinceId ?? ""}
         onChange={(e) =>
           update("provinceId", e.target.value != "" ? e.target.value : null)
         }
@@ -185,10 +216,17 @@ const Functions = ({ save, update }) => {
       <a href="#" className="fnc-btn publish" onClick={save}>
         Save <i className="fa-sharp fa-solid fa-floppy-disk"></i>
       </a>
-      <a href="#" className="fnc-btn reset">
+      <a
+        href={id != null ? `/admin/edit/${id}` : "/admin/new-blog"}
+        className="fnc-btn reset"
+      >
         Reset <i className="fa-sharp fa-solid fa-rotate-right"></i>
       </a>
-      <a href="#" className="fnc-btn cancel">
+      <a
+        href="#"
+        className="fnc-btn cancel"
+        onClick={() => window.location.replace("/admin")}
+      >
         Cancel
       </a>
     </div>

@@ -1,4 +1,4 @@
-const MarkDown = ({ update }) => {
+const MarkDown = ({ update, innerRef, status = "draft" }) => {
   return (
     <section id="blogs-admin">
       <form
@@ -28,9 +28,10 @@ const MarkDown = ({ update }) => {
                       e.target.value.toLocaleLowerCase()
                     )
                   }
+                  defaultValue={status}
                 >
                   {["Draft", "Published"].map((e) => (
-                    <option value={e} key={e}>
+                    <option value={e.toLowerCase()} key={e}>
                       {e}
                     </option>
                   ))}
@@ -45,6 +46,7 @@ const MarkDown = ({ update }) => {
               id="markdown"
               cols="30"
               rows="10"
+              ref={innerRef}
               onChange={(e) =>
                 update("markdown", e.target.value != "" ? e.target.value : null)
               }
