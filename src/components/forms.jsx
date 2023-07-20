@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-import AdminNav from "../../partials/admin_nav";
-import SideNav from "../../partials/admin_side_nav";
-import MarkDown from "../../partials/markdown";
-import Functions from "../../partials/functions";
+import AdminNav from "../partials/admin_nav";
+import SideNav from "../partials/admin_side_nav";
+import MarkDown from "../partials/markdown";
+import Functions from "../partials/functions";
 
 const AdminNewBlogBody = () => {
   // const [formData, setFormData] = useState({
@@ -52,7 +52,7 @@ const AdminNewBlogBody = () => {
         });
         return;
       }
-      console.log(blog);
+
       let _formData = new FormData();
       for (let items in blog)
         _formData.append(
@@ -109,7 +109,22 @@ const AdminNewBlogBody = () => {
 
   return (
     <>
-      <AdminNav save={save} />
+      <AdminNav
+        extra={
+          <>
+            <li>
+              <a className="nav-link text-white" href="https://visitour.ph">
+                Home
+              </a>
+            </li>
+            <li onClick={save}>
+              <a className="nav-link text-white primary-btn" href="#">
+                Save
+              </a>
+            </li>
+          </>
+        }
+      />
       <div
         style={{
           display: "flex",

@@ -1,7 +1,7 @@
 import React from "react";
 import logoUrl from "../assets/imgs/logos/visitour.png";
 
-const AdminNav = ({ save }) => {
+const AdminNav = ({ extra }) => {
   return (
     <>
       <div style={{ width: "100vw" }}>
@@ -48,16 +48,7 @@ const AdminNav = ({ save }) => {
               alignItems: "center",
             }}
           >
-            <li>
-              <a className="nav-link text-white" href="/">
-                Home
-              </a>
-            </li>
-            <li onClick={save}>
-              <a className="nav-link text-white primary-btn" href="#">
-                Save
-              </a>
-            </li>
+            {extra}
           </ul>
         </nav>
       </div>
