@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 
-const localUrl = "http://visitour-alleyshawwn:5000";
+const localUrl = "https://dev.api.visitour.ph";
 const mode = "dev"; // prod or dev
 export default defineConfig({
   plugins: [react()],
