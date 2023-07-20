@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import AdminNav from "../partials/admin_nav";
 import AdminSideNav from "../partials/admin_side_nav";
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const user = JSON.parse(Cookies.get("user") ?? `{}`);
+    if (Object.keys(user).length == 0) return navigate("/admin/login");
+
     (async () => {
       let { data } = await axios.get(`${appUrl}/blog/get-blogs`);
 
       if (data.success) {
         setBlogs(data.blogs);
-        // res.render("admin/admin", {
-        //   blogs: data.blogs,
-        //   admin: req.session.admin,
-        // });
       }
     })();
   }, []);
+
   return (
     <>
       <AdminNav

@@ -68,7 +68,7 @@ const AdminNewBlogBody = () => {
           "Content-Type": `multipart/form-data`,
         },
       });
-      console.log(data);
+
       if (data.success) {
         Swal.fire({
           title: data.message,
@@ -113,7 +113,7 @@ const AdminNewBlogBody = () => {
         extra={
           <>
             <li>
-              <a className="nav-link text-white" href="https://visitour.ph">
+              <a className="nav-link text-white" href="/admin">
                 Home
               </a>
             </li>
