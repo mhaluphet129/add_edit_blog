@@ -86,6 +86,7 @@ const AdminNewBlogBody = () => {
   useEffect(() => {
     (async () => {
       if (params?.id != null || params?.id != undefined) {
+        document.title = "Visitour Blogs | Edit Blog";
         let { data } = await axios.get(`${appUrl}/blog/get-blogs-with-filter`, {
           params: {
             _id: params.id,
@@ -103,7 +104,7 @@ const AdminNewBlogBody = () => {
             icon: "error",
             confirmButtonText: "Confirm",
           });
-      }
+      } else document.title = "Visitour Blogs | New Blog";
     })();
   }, []);
 

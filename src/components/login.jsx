@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const passRef = useRef();
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -43,7 +44,7 @@ const Login = () => {
         <div className="column">
           <div className="inputs admin-fields">
             {error != null && (
-              <div class="alert-error">
+              <div className="alert-error">
                 {error == "no-user"
                   ? "Account Does not Exist"
                   : "Wrong Password"}
@@ -61,6 +62,9 @@ const Login = () => {
                 className="username"
                 id="username"
                 onChange={(e) => setUsername(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key == "Enter") passRef.current.focus();
+                }}
               />
             </div>
 
@@ -72,7 +76,11 @@ const Login = () => {
                 name="password"
                 className="password"
                 id="password"
+                ref={passRef}
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key == "Enter") handleLogin();
+                }}
               />
             </div>
 

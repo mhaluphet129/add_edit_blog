@@ -12,6 +12,7 @@ const Blog = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = "Visitour Blogs | Blogs";
     const user = JSON.parse(Cookies.get("user") ?? `{}`);
     if (Object.keys(user).length == 0) return navigate("/admin/login");
 
@@ -77,12 +78,12 @@ const Blog = () => {
                         Edit
                       </a>
                       |
-                      <a
+                      {/* <a
                         className="blog-admin-content-table-btn red-warning"
                         // href={`/admin/edit/${blog._id}`}
                       >
                         Delete
-                      </a>
+                      </a> */}
                       {/* <!-- <a className="blog-admin-content-table-btn" href="">Quick Edit</a> -->
                   <!-- <a id="red" className="blog-admin-content-table-btn" href="">Delete</a> -->
                   <!-- <a className="blog-admin-content-table-btn" href="">Duplicate</a> --> */}

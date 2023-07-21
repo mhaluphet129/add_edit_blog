@@ -282,3 +282,21 @@ a.cancel:hover {
 .red-warning {
   color: red !important;
 }
+
+/* SCROLLBARS */
+
+.form-group textarea::-webkit-scrollbar,
+.form-head textarea::-webkit-scrollbar {
+  width: 5px;
+}
+
+.form-group textarea::-webkit-scrollbar-track,
+.form-head textarea::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgb(85, 85, 85);
+}
+
+.form-group textarea::-webkit-scrollbar-thumb,
+.form-head textarea::-webkit-scrollbar-thumb {
+  background-color: rgb(68, 68, 68);
+  border-radius: 10px;
+}
