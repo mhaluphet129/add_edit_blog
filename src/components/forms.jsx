@@ -140,7 +140,7 @@ const AdminNewBlogBody = () => {
             })
           }
           innerRef={mdRef}
-          status={blog?.initialValue}
+          status={blog?.publishmentStatus?.toLowerCase()}
         />
         <Functions
           save={save}
