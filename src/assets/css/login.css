@@ -23,6 +23,8 @@ body {
   justify-content: center;
   align-items: center;
   text-align: left;
+  background-color: white;
+  color: black;
 }
 
 .container-login > .column {
