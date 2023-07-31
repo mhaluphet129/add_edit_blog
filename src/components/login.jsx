@@ -101,7 +101,7 @@ const Login = () => {
               </div>
             )}
 
-            <img src={logoUrl} alt="Visitour" className="login-logo" />
+            <img src={'/imgs/login-page/logo.png'} alt="Visitour" className="login-logo" />
 
             <div>
               <label htmlFor="username">Email</label>
