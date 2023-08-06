@@ -28,7 +28,7 @@ const MarkDown = ({ update, innerRef, status = "draft" }) => {
                       e.target.value.toLocaleLowerCase()
                     )
                   }
-                  defaultValue={status}
+                  value={status}
                 >
                   {["Draft", "Published"].map((e) => (
                     <option value={e.toLowerCase()} key={e}>

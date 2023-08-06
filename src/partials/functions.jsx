@@ -199,7 +199,11 @@ const Functions = ({ save, update, blog, id }) => {
         required
         className="input"
         id="province"
-        value={blog?.provinceId ?? ""}
+        value={
+          typeof blog?.provinceId == "string"
+            ? blog?.provinceId
+            : blog?.provinceId?._id ?? ""
+        }
         onChange={(e) =>
           update("provinceId", e.target.value != "" ? e.target.value : null)
         }
