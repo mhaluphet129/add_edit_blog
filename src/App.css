@@ -170,6 +170,7 @@ li:has(> a.primary-btn) {
   display: flex;
   flex-direction: column;
   border-radius: 5px;
+  width: 100%;
 }
 
 .fnc-btn:hover {

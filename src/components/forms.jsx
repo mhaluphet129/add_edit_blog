@@ -6,6 +6,7 @@ import AdminNav from "../partials/admin_nav";
 import SideNav from "../partials/admin_side_nav";
 import MarkDown from "../partials/markdown";
 import Functions from "../partials/functions";
+import { toast } from "react-toastify";
 
 const AdminNewBlogBody = () => {
   // const [formData, setFormData] = useState({
@@ -70,15 +71,31 @@ const AdminNewBlogBody = () => {
       });
 
       if (data.success) {
-        Swal.fire({
-          title: data.message,
-          html: "will be redirected to blog list",
-          timer: 1500,
-          timerProgressBar: true,
-        }).then((result) => {
-          if (result.dismiss === Swal.DismissReason.timer)
-            window.location.replace("/admin");
-        });
+        toast(
+          <p>
+            Good job! 👌 <br /> You will be redirected to blog list
+          </p>,
+          {
+            position: "top-center",
+            closeButton: false,
+            toastId: "0r3x",
+            autoClose: 2600
+          }
+        );
+
+        setTimeout(() => {
+          toast.dismiss("0r3x");
+          window.location.replace("/admin");
+        }, 3000);
+        // Swal.fire({
+        //   title: data.message,
+        //   html: "will be redirected to blog list",
+        //   timer: 1500,
+        //   timerProgressBar: true,
+        // }).then((result) => {
+        //   if (result.dismiss === Swal.DismissReason.timer)
+        //     window.location.replace("/admin");
+        // });
       }
     })();
   };
@@ -92,11 +109,12 @@ const AdminNewBlogBody = () => {
             _id: params.id,
           },
         });
+
         if (data.success) {
           setBlog(data.blog[0]);
           // setFormData(data.blog[0]);
           setOriginalBlog(data.blog[0]);
-          mdRef.current.value = data.blog[0].markdown;
+          mdRef.current = data.blog[0].markdown;
         } else
           Swal.fire({
             title: "Status Code: 500",
