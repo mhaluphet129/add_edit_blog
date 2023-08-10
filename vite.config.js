@@ -6,18 +6,12 @@ import react from "@vitejs/plugin-react";
 const prodApi = "https://api.visitour.ph";
 const stagingApi = "https://dev.api.visitour.ph";
 
-const config = {
+// Set to true if build is for production
+const isProd = false;
+
+export default defineConfig({
   plugins: [react()],
   define: {
-    appUrl: JSON.stringify(prodApi),
+    appUrl: JSON.stringify(isProd ? prodApi : stagingApi),
   },
-};
-
-export default defineConfig(({ command }) => {
-  if (command === "serve") {
-    return { ...config, define: { appUrl: JSON.stringify(stagingApi) } };
-  } else {
-    // command === 'build'
-    return { ...config };
-  }
 });
