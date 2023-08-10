@@ -50,10 +50,22 @@ li:has(> a.primary-btn) {
   padding: 1rem;
   width: 100%;
   border: none;
-  background-color: #222222;
+  background-color: #252627;
   color: #fff;
   text-align: left;
   border-radius: 0;
+}
+
+.blogs-admin-side-nav-btn.active {
+  background-color: #222222;
+}
+
+.blogs-admin-side-nav-btn.active p {
+  margin-left: 10px;
+}
+
+.blogs-admin-side-nav-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 #blogs-admin {
@@ -260,6 +272,7 @@ a.cancel:hover {
 
 .blog-admin-content-table-title-container {
   font-weight: 300;
+  width: 700px;
 }
 
 .blog-admin-content-table-btn-container a {
@@ -300,4 +313,12 @@ a.cancel:hover {
 .form-head textarea::-webkit-scrollbar-thumb {
   background-color: rgb(68, 68, 68);
   border-radius: 10px;
+}
+
+.logout-btn {
+  color: #f00;
+}
+
+.logout-btn:hover {
+  color: rgba(255, 0, 0, 0.5);
 }

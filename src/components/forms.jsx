@@ -1,32 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import axios from "axios";
 
 import AdminNav from "../partials/admin_nav";
-import SideNav from "../partials/admin_side_nav";
 import MarkDown from "../partials/markdown";
 import Functions from "../partials/functions";
 import { toast } from "react-toastify";
 
 const AdminNewBlogBody = () => {
-  // const [formData, setFormData] = useState({
-  //   markdown: "",
-  //   title: "",
-  //   description: "",
-  //   author: "",
-  //   provinceId: "",
-  //   coverPhotoText: "",
-  //   coverPhotoTextBlob: "",
-  //   category: "Tourists Spots",
-  //   publishmentStatus: "draft",
-  //   date: "",
-  // });
-
   const [blog, setBlog] = useState({});
-  const [originalBlog, setOriginalBlog] = useState({});
   let missingInput = null;
   const mdRef = useRef();
   let params = useParams();
+  let navigate = useNavigate();
 
   const save = () => {
     (async () => {
@@ -85,7 +72,7 @@ const AdminNewBlogBody = () => {
 
         setTimeout(() => {
           toast.dismiss("0r3x");
-          window.location.replace("/admin");
+          navigate("/admin");
         }, 3000);
         // Swal.fire({
         //   title: data.message,
@@ -101,6 +88,8 @@ const AdminNewBlogBody = () => {
   };
 
   useEffect(() => {
+    const user = JSON.parse(Cookies.get("user") ?? `{}`);
+    if (Object.keys(user).length == 0) navigate("/admin/login");
     (async () => {
       if (params?.id != null || params?.id != undefined) {
         document.title = "Visitour Blogs | Edit Blog";
@@ -111,14 +100,15 @@ const AdminNewBlogBody = () => {
         });
 
         if (data.success) {
+          if (data.blog?.length == 0) navigate("/admin");
           setBlog(data.blog[0]);
           // setFormData(data.blog[0]);
           setOriginalBlog(data.blog[0]);
           mdRef.current = data.blog[0].markdown;
         } else
           Swal.fire({
-            title: "Status Code: 500",
-            text: `Error in the server`,
+            title: "Status Code: 404",
+            text: "Link is invalid",
             icon: "error",
             confirmButtonText: "Confirm",
           });
@@ -128,29 +118,14 @@ const AdminNewBlogBody = () => {
 
   return (
     <>
-      <AdminNav
-        extra={
-          <>
-            <li>
-              <a className="nav-link text-white" href="/admin">
-                Home
-              </a>
-            </li>
-            <li onClick={save}>
-              <a className="nav-link text-white primary-btn" href="#">
-                Save
-              </a>
-            </li>
-          </>
-        }
-      />
+      <AdminNav />
       <div
         style={{
           display: "flex",
           background: "#202123",
         }}
       >
-        <SideNav />
+        <div className="blogs-admin-side-nav"></div>
         <MarkDown
           update={(name, value) =>
             setBlog((e) => {

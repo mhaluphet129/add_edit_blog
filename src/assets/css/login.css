@@ -23,6 +23,8 @@ body {
   justify-content: center;
   align-items: center;
   text-align: left;
+  background-color: white;
+  color: black;
 }
 
 .container-login > .column {
@@ -45,11 +47,11 @@ body {
   width: 60%;
 }
 
-.container-login > .bg-login {
+/* .container-login > .bg-login {
   background-image: url("../imgs/elnido_palawan.png");
   background-repeat: no-repeat;
   background-size: cover;
-}
+} */
 
 .admin-fields {
   font-family: "Fredoka", sans-serif;

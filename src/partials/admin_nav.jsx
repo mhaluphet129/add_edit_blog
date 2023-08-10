@@ -1,7 +1,10 @@
 import React from "react";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 import logoUrl from "../assets/imgs/logos/visitour.png";
 
 const AdminNav = ({ extra }) => {
+  const navigate = useNavigate();
   return (
     <>
       <div style={{ width: "100vw" }}>
@@ -49,6 +52,28 @@ const AdminNav = ({ extra }) => {
             }}
           >
             {extra}
+            <li>
+              <a
+                className="nav-link text-white logout-btn"
+                href="#"
+                onClick={() => {
+                  Swal.fire({
+                    title: "Are you sure you want to logout ?",
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                    showDenyButton: true,
+                    denyButtonText: "Logout",
+                  }).then((result) => {
+                    if (result.isDenied) {
+                      Cookies.remove("user");
+                      navigate("/admin/login");
+                    }
+                  });
+                }}
+              >
+                LOGOUT <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              </a>
+            </li>
           </ul>
         </nav>
       </div>
