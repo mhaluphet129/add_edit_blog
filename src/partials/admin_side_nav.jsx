@@ -10,7 +10,7 @@ const SideNav = ({ index, setIndex }) => {
         className="fnc-btn publish"
         onClick={() => navigate("/admin/new-blog")}
       >
-        <i class="fa-solid fa-file-circle-plus"></i> New Blog
+        <i className="fa-solid fa-file-circle-plus"></i> New Blog
       </a>
 
       {[
@@ -18,6 +18,7 @@ const SideNav = ({ index, setIndex }) => {
         { label: "Draft", icon: "fa-regular fa-edit" },
       ].map((e, i) => (
         <p
+          key={e.label}
           className={`blogs-admin-side-nav-btn ${i == index ? "active" : ""}`}
           onClick={() => setIndex(i)}
           style={{

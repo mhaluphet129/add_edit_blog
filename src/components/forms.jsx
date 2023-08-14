@@ -60,7 +60,7 @@ const AdminNewBlogBody = () => {
       if (data.success) {
         toast(
           <p>
-            Good job! 👌 <br /> You will be redirected to blog list
+            Good job! 👏 <br /> You will be redirected to blog list
           </p>,
           {
             position: "top-center",
@@ -101,9 +101,8 @@ const AdminNewBlogBody = () => {
 
         if (data.success) {
           if (data.blog?.length == 0) navigate("/admin");
+
           setBlog(data.blog[0]);
-          // setFormData(data.blog[0]);
-          setOriginalBlog(data.blog[0]);
           mdRef.current = data.blog[0].markdown;
         } else
           Swal.fire({
