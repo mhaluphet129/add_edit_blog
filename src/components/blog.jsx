@@ -87,7 +87,7 @@ const Blog = () => {
                   else if (index == 1) return e.publishmentStatus == "draft";
                 })
                 .map((blog) => (
-                  <tr>
+                  <tr key={blog._id}>
                     <td>
                       <div className="blog-admin-content-table-title-container">
                         <a href="/admin">{blog.title}</a>

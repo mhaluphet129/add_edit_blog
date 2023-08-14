@@ -71,7 +71,7 @@ const AdminNav = ({ extra }) => {
                   });
                 }}
               >
-                LOGOUT <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                LOGOUT <i className="fa-solid fa-arrow-right-from-bracket"></i>
               </a>
             </li>
           </ul>
